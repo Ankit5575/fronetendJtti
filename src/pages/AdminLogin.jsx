@@ -1,24 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Lottie from "lottie-react";
+import planeAnimation from "../assets/ani.json"; // ✅ Your animation path
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const navigate = useNavigate();
+
+  const motivationalLines = [
+    "Stay focused, success is near!",
+    "Every great journey begins with a single step.",
+    "You are stronger than you think!",
+    "Dream big. Work hard. Stay humble!",
+    "Progress, not perfection!",
+    "Believe in yourself and all that you are.",
+  ];
+
+  // Motivational text rotate every 1 second
+  useEffect(() => {
+    let interval;
+    if (loading) {
+      interval = setInterval(() => {
+        setCurrentLineIndex((prevIndex) => (prevIndex + 1) % motivationalLines.length);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [loading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await axios.post(`https://newportal.onrender.com/admin/login`, {
         email,
         password,
       });
-      const { token } = res.data; // ✅ token mil raha hai backend se
+      const { token } = res.data;
       if (token) {
-          localStorage.setItem('token', token); // ✅ token ko localStorage me save karo
+        localStorage.setItem("token", token);
       }
       if (res.data.success) {
         localStorage.setItem("admin", JSON.stringify(res.data.admin));
@@ -35,16 +60,37 @@ function AdminLogin() {
         position: "top-center",
         autoClose: 3000,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4">
-      <div className="bg-white shadow-2xl rounded-xl p-8 w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 relative">
+
+      {/* 🔥 Loading Overlay with Blur */}
+      {loading && (
+        <>
+          {/* Background blue with opacity */}
+          <div className="absolute inset-0  bg-opacity-50 z-40"></div>
+
+          {/* Center Animation + Motivation */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center z-50">
+            <Lottie animationData={planeAnimation} className="w-44 h-44" loop={true} />
+            <p className="mt-4 text-lg font-semibold text-white text-center animate-pulse">
+              {motivationalLines[currentLineIndex]}
+            </p>
+          </div>
+        </>
+      )}
+
+      {/* Form Box */}
+      <div className={`bg-white shadow-2xl rounded-xl p-8 w-full max-w-md transition-all duration-300 ${loading ? "blur-sm" : ""}`}>
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold text-gray-800 mb-2">Admin Login</h1>
           <p className="text-gray-500">Login to access the admin dashboard</p>
         </div>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block mb-1 text-gray-600 font-medium">Email Address</label>
@@ -70,13 +116,13 @@ function AdminLogin() {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition duration-300"
+            disabled={loading}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition duration-300 disabled:opacity-50"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        {/* Toast Container */}
         <ToastContainer />
       </div>
     </div>

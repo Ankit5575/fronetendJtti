@@ -4,7 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function SignUp() {
+function SignUp() { 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [rollNumber, setRollNumber] = useState("");
@@ -137,7 +137,7 @@ function SignUp() {
             <label className="block mb-1 text-gray-600 font-medium">Roll Number</label>
             <input
               type="text"
-              placeholder="Enter your roll number"
+              placeholder="Must be Unique"
               value={rollNumber}
               onChange={(e) => setRollNumber(e.target.value)}
               required
@@ -149,8 +149,9 @@ function SignUp() {
             <label className="block mb-1 text-gray-600 font-medium">Adhar Number</label>
             <input
               type="text"
-              placeholder="Enter your adhar number"
-              value={adharNumber}
+              placeholder="Enter your 12-digit Aadhaar number"
+
+               value={adharNumber}
               onChange={(e) => setAdharNumber(e.target.value)}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
