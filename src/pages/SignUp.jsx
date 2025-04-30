@@ -157,6 +157,7 @@ function SignUp() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
           </div>
+           
 
           <div>
             <label className="block mb-1 text-gray-600 font-medium">Fee</label>

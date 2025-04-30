@@ -22,7 +22,6 @@ function AdminLogin() {
     "Believe in yourself and all that you are.",
   ];
 
-  // Motivational text rotate every 1 second
   useEffect(() => {
     let interval;
     if (loading) {
@@ -68,24 +67,22 @@ function AdminLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 relative">
 
-      {/* 🔥 Loading Overlay with Blur */}
+      {/* 🔥 Loading Overlay with Animation & Text */}
       {loading && (
-        <>
-          {/* Background blue with opacity */}
-          <div className="absolute inset-0  bg-opacity-50 z-40"></div>
-
-          {/* Center Animation + Motivation */}
-          <div className="absolute inset-0 flex flex-col justify-center items-center z-50">
-            <Lottie animationData={planeAnimation} className="w-44 h-44" loop={true} />
-            <p className="mt-4 text-lg font-semibold text-white text-center animate-pulse">
-              {motivationalLines[currentLineIndex]}
-            </p>
-          </div>
-        </>
+        <div className="absolute inset-0 flex flex-col justify-center items-center z-50  bg-opacity-30 backdrop-blur-sm">
+          <Lottie animationData={planeAnimation} className="w-44 h-44" loop={true} />
+          <p className="mt-4 text-lg font-semibold text-black text-center animate-pulse">
+            {motivationalLines[currentLineIndex]}
+          </p>
+        </div>
       )}
 
       {/* Form Box */}
-      <div className={`bg-white shadow-2xl rounded-xl p-8 w-full max-w-md transition-all duration-300 ${loading ? "blur-sm" : ""}`}>
+      <div
+        className={`bg-white shadow-2xl rounded-xl p-8 w-full max-w-md transition-all duration-300 ${
+          loading ? "opacity-50 pointer-events-none" : "opacity-100"
+        }`}
+      >
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold text-gray-800 mb-2">Admin Login</h1>
           <p className="text-gray-500">Login to access the admin dashboard</p>
