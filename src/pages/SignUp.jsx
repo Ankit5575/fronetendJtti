@@ -13,6 +13,7 @@ function SignUp() {
   const [course, setCourse] = useState("");
   const [months, setMonths] = useState("");  
   const [timing, setTiming] = useState("");
+  const [phone, setphone] = useState("");
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,9 +31,10 @@ function SignUp() {
     formData.append("rollNumber", rollNumber);
     formData.append("adharNumber", adharNumber);
     formData.append("fee", fee);
+    formData.append("phone" , phone)
     formData.append("course", course);
     formData.append("months", months);  
-    formData.append("timing", timing);
+    formData.append("timing", timing);   //do mai edit kiya usestate or from data mai aur addnew field
     formData.append("photo", photo);
 
     try {
@@ -57,10 +59,10 @@ function SignUp() {
           toast.error("Email already exists!");
         } 
         else {
-          toast.error("Registration failed. Please try again.");
+          toast.error("Aadhar Number already exists. !");
         }
       } else {
-        toast.error("Network error. Please check your connection.");
+        toast.error("No internet, no party 🎉. Please check your connection.");
       }
     } finally {
       setLoading(false);
@@ -153,6 +155,19 @@ function SignUp() {
 
                value={adharNumber}
               onChange={(e) => setAdharNumber(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+            />
+          </div>
+           
+          <div>
+            <label className="block mb-1 text-gray-600 font-medium">Phone Number</label>
+            <input
+              type="text"
+              placeholder="Enter your phone number"
+
+               value={phone}
+              onChange={(e) => setphone(e.target.value)}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />

@@ -397,6 +397,8 @@ const handleSmartUpdate = async (id) => {
               <th className="py-3 px-4 text-left">Images</th>
               <th className="py-3 px-4 text-left">idCard</th>
               <th className="py-3 px-4 text-left">certificate</th>
+                            {/* <th className="py-3 px-4 text-left">Roll No.</th> */}
+
             </tr>
           </thead>
           <tbody>

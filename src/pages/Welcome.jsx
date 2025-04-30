@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import Lottie from 'lottie-react';
+import successAnimation from '../assets/ani2.json'; // Make sure this path is correct
 
 function Welcome() {
   const navigate = useNavigate();
@@ -18,17 +20,17 @@ function Welcome() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentFactIndex((prevIndex) => 
+      setCurrentFactIndex((prevIndex) =>
         prevIndex === funFacts.length - 1 ? 0 : prevIndex + 1
       );
-    }, 4000); // Change fact every 4 seconds
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 animate-gradient-x">
-      <motion.div 
+      <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 100 }}
@@ -46,7 +48,7 @@ function Welcome() {
                 left: `${Math.random() * 100}%`,
               }}
               initial={{ y: -100, opacity: 0 }}
-              animate={{ 
+              animate={{
                 y: [0, 1000],
                 opacity: [1, 0],
                 x: Math.random() > 0.5 ? [0, 100] : [0, -100]
@@ -61,30 +63,23 @@ function Welcome() {
         </div>
 
         <div className="relative z-10">
-          <motion.div
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4 }}
-            className="mb-6"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-20 w-20 mx-auto text-green-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </motion.div>
+          {/* ✅ Replaced tick SVG with Lottie animation */}
+          <div className="mb-6">
+            <Lottie
+              animationData={successAnimation}
+              loop={false}
+              autoplay={true}
+              style={{ height: 120, width: 120, margin: "0 auto" }}
+            />
+          </div>
 
           <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-600 mb-4">
             Welcome to JTTI Student
           </h1>
+
+          <p className="text-red-600 font-bold uppercase text-center mt-4">
+            Don't forget to verify your Gmail and Roll Number!
+          </p>
 
           <p className="text-lg text-gray-600 mb-6">
             User registered successfully! 🎉
@@ -97,7 +92,7 @@ function Welcome() {
                 key={index}
                 className="absolute top-0 left-0 right-0 p-4 bg-indigo-50 rounded-lg"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ 
+                animate={{
                   opacity: index === currentFactIndex ? 1 : 0,
                   y: index === currentFactIndex ? 0 : 20
                 }}
@@ -137,9 +132,7 @@ function Welcome() {
               transition={{ duration: 0.3 }}
             />
           </motion.button>
-          <p className="text-red-600 font-bold uppercase text-center mt-4">
-  Don't forget to  your Gmail and Roll Number!
-</p>
+
           <div className="mt-6 text-sm text-gray-500 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"

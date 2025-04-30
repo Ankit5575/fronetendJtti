@@ -101,7 +101,7 @@ const handleQuizStart = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </div>  
 
             {/* Profile Details */}
             <div className="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -113,6 +113,7 @@ const handleQuizStart = () => {
                 <DetailItem label="Roll Number" value={user.rollNumber} />
                 <DetailItem label="Aadhar Number" value={user.adharNumber} />
                 <DetailItem label="Course" value={user.course} />
+                <DetailItem label="Phone Number" value={user.phone} />
                 {/* <DetailItem label="Phone" value={user.phone} /> */}
               </div>
 
