@@ -8,7 +8,7 @@ const courseList = [
   'Tally Prime',
   'Excel',
   'ETEC'
-];
+];                         //4 bar link change kiya ha ? 
 
 const AdminCreateQuiz = () => {
   const [course, setCourse] = useState('');
@@ -25,7 +25,7 @@ const AdminCreateQuiz = () => {
 
     setLoading(true);
     axios
-      .get(`http://localhost:8080/admin/quiz/course/${course}`)
+      .get(`https://newportal.onrender.com/admin/quiz/course/${course}`)
       .then((res) => {
         if (res.data.quiz) {
           const quiz = res.data.quiz;
@@ -92,11 +92,11 @@ const AdminCreateQuiz = () => {
       let res;
       if (existingQuizId) {
         res = await axios.put(
-          `http://localhost:8080/admin/quiz/${existingQuizId}`,
+          `https://newportal.onrender.com/admin/quiz/${existingQuizId}`,
           { title, course, questions, isLive }
         );
       } else {
-        res = await axios.post(`http://localhost:8080/admin/quiz`, {
+        res = await axios.post(`https://newportal.onrender.com/admin/quiz`, {
           title,
           course,
           questions,
@@ -121,7 +121,7 @@ const AdminCreateQuiz = () => {
 
     setLoading(true);
     try {
-      const res = await axios.put(`http://localhost:8080/admin/quiz/toggle`, {
+      const res = await axios.put(`https://newportal.onrender.com/admin/quiz/toggle`, {
         quizId: existingQuizId,
         isLive: !isLive
       });

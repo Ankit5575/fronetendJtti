@@ -56,7 +56,7 @@ function Profile() {
   
     const fetchQuiz = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/admin/quiz/course/${user.course}`, {
+        const res = await fetch(`https://newportal.onrender.com/admin/quiz/course/${user.course}`, {
           headers: {
             'Cache-Control': 'no-cache'
           }
