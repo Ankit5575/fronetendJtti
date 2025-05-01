@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
+
 
 function AdminDashboard() {
+  // const navigate
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -317,8 +321,13 @@ const handleSmartUpdate = async (id) => {
           </div>
         </div>
       </div>
-
-      {/* Filter Section */}
+  {/* Create Quiz Button */}
+  <button
+        onClick={() => navigate('/admin/create-quiz')}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Create Quiz
+      </button>      {/* Filter Section */}
       <div className="mb-6 bg-white p-4 rounded-lg shadow">
         <h3 className="text-lg font-semibold mb-3">Filters</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
