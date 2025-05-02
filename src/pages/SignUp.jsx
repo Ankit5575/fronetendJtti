@@ -19,7 +19,9 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const courses = ['Basic Computer', 'Web Development', 'Web Design', 'Tally Prime', 'Excel', 'ETEC'];
+  // const courses = ['Basic Computer', 'Web Development', 'Web Design', 'Tally Prime', 'Excel', 'ETEC'];
+    const courses = ['Basic Computer','DCA','Advanced Excel','Photoshop','CorelDraw','Advaanced Basic','ADC','Typing English','Typing Hindi' ,'Web Development', 'Web Design', 'Tally Prime', 'Excel', 'ETEC'];
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
