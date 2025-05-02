@@ -159,7 +159,7 @@ function Login() {
           rel="noopener noreferrer"
           className="text-blue-300 hover:underline ml-1"
         >
-          @viranshusingh055
+          @Jtti.in
         </a>
       </footer>
 
