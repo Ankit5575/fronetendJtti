@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+// const courseList = [
+//   'Basic Computer',
+//   'Web Development',
+//   'Web Design',
+//   'Tally Prime',
+//   'Excel',
+//   'ETEC'
+// ];      
+//4 bar link change kiya ha ? 
 const courseList = [
   'Basic Computer',
+  'DCA',
+  'Advanced Excel',
+  'Photoshop',
+  'CorelDraw',
+  'Advaanced Basic', // Note: typo in "Advaanced"
+  'ADC',
+  'Typing English',
+  'Typingzzzz', // Note: possibly a typo or intentional?
   'Web Development',
   'Web Design',
   'Tally Prime',
   'Excel',
   'ETEC'
-];                         //4 bar link change kiya ha ? 
+];
+
 
 const AdminCreateQuiz = () => {
   const [course, setCourse] = useState('');
