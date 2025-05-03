@@ -7,9 +7,9 @@ import "react-toastify/dist/ReactToastify.css";
 function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [rollNumber, setRollNumber] = useState("");
+  const [rollPrefix, setRollPrefix] = useState("SN");
+  const [rollSuffix, setRollSuffix] = useState("");
   const [adharNumber, setAdharNumber] = useState("");
-  // const [fee, setFee] = useState("");
   const [course, setCourse] = useState("");
   const [months, setMonths] = useState("");
   const [timing, setTiming] = useState("");
@@ -25,21 +25,21 @@ function SignUp() {
     "Web Development", "Web Design", "Tally Prime", "Excel", "ETEC"
   ];
 
-  // Load saved form data from localStorage
+  // Load saved form data
   useEffect(() => {
     const savedForm = JSON.parse(localStorage.getItem("signupForm"));
     if (savedForm) {
       setName(savedForm.name || "");
       setEmail(savedForm.email || "");
-      setRollNumber(savedForm.rollNumber || "");
+      setRollPrefix(savedForm.rollPrefix || "NC");
+      setRollSuffix(savedForm.rollSuffix || "");
       setAdharNumber(savedForm.adharNumber || "");
-      // setFee(savedForm.fee || "");
       setCourse(savedForm.course || "");
       setMonths(savedForm.months || "");
       setTiming(savedForm.timing || "");
       setPhone(savedForm.phone || "");
     }
-  }, []);
+  }, []);                        //ye filed update ki hai mene 
 
   const updateFormField = (field, value) => {
     const currentForm = JSON.parse(localStorage.getItem("signupForm")) || {};
@@ -49,9 +49,9 @@ function SignUp() {
     switch (field) {
       case "name": setName(value); break;
       case "email": setEmail(value); break;
-      case "rollNumber": setRollNumber(value); break;
+      case "rollPrefix": setRollPrefix(value); break;
+      case "rollSuffix": setRollSuffix(value); break;
       case "adharNumber": setAdharNumber(value); break;
-      // case "fee": setFee(value); break;
       case "course": setCourse(value); break;
       case "months": setMonths(value); break;
       case "timing": setTiming(value); break;
@@ -63,8 +63,12 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Client-side field validations
-    if (!name || !email || !rollNumber || !adharNumber  || !course || !months || !timing || !phone || !photo) {
+    const fullRollNumber = rollPrefix + rollSuffix;
+
+    if (
+      !name || !email || !fullRollNumber || !adharNumber ||
+      !course || !months || !timing || !phone || !photo
+    ) {
       toast.error("Please fill in all the required fields.");
       return;
     }
@@ -84,20 +88,23 @@ function SignUp() {
       return;
     }
 
-    setLoading(true);
+    if (!/^\d+$/.test(rollSuffix)) {
+      toast.error("Roll number suffix must be numeric.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
-    formData.append("rollNumber", rollNumber);
+    formData.append("rollNumber", fullRollNumber);
     formData.append("adharNumber", adharNumber);
-    // formData.append("fee", fee);
     formData.append("phone", phone);
     formData.append("course", course);
     formData.append("months", months);
     formData.append("timing", timing);
     formData.append("photo", photo);
 
+    setLoading(true);
     try {
       const res = await axios.post("https://newportal.onrender.com/api/user/create", formData, {
         headers: {
@@ -145,25 +152,12 @@ function SignUp() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
       {loading && (
         <div className="fixed inset-0 bg-opacity-50 z-50 flex items-center justify-center backdrop-blur-sm">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600"></div>
         </div>
       )}
-
       <div className="bg-white shadow-2xl rounded-xl p-8 w-full max-w-lg relative z-10">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold text-gray-800 mb-2">Sign Up for JTTI Portal</h1>
@@ -171,26 +165,62 @@ function SignUp() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {[
-            { label: "Name", value: name, field: "name", type: "text", placeholder: "Enter your full name" },
-            { label: "Email Address", value: email, field: "email", type: "email", placeholder: "Enter your email" },
-            { label: "Roll Number", value: rollNumber, field: "rollNumber", type: "text", placeholder: "Must be Unique" },
-            { label: "Aadhar Number", value: adharNumber, field: "adharNumber", type: "text", placeholder: "Enter 12-digit Aadhaar number" },
-            { label: "Phone Number", value: phone, field: "phone", type: "text", placeholder: "Enter 10-digit phone number" },
-            // { label: "Fee", value: fee, field: "fee", type: "number", placeholder: "Enter fee amount" },
-          ].map(({ label, value, field, type, placeholder }, i) => (
-            <div key={i}>
-              <label className="block mb-1 text-gray-600 font-medium">{label}</label>
+          {/* Name and Email */}
+          {[{ label: "Name", value: name, field: "name", type: "text", placeholder: "Enter your full name" },
+            { label: "Email Address", value: email, field: "email", type: "email", placeholder: "Enter your email" }]
+            .map(({ label, value, field, type, placeholder }, i) => (
+              <div key={i}>
+                <label className="block mb-1 text-gray-600 font-medium">{label}</label>
+                <input
+                  type={type}
+                  value={value}
+                  placeholder={placeholder}
+                  onChange={(e) => updateFormField(field, e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                />
+              </div>
+            ))}
+
+          {/* Roll Number (Prefix + Suffix) */}
+          <div>
+            <label className="block mb-1 text-gray-600 font-medium">Roll Number</label>
+            <div className="flex gap-2">
+              <select
+                value={rollPrefix}
+                onChange={(e) => updateFormField("rollPrefix", e.target.value)}
+                className="w-1/3 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="NC">NC</option>
+                <option value="SN">SN</option>
+              </select>
               <input
-                type={type}
-                value={value}
-                placeholder={placeholder}
-                onChange={(e) => updateFormField(field, e.target.value)}
+                type="text"
+                value={rollSuffix}
+                onChange={(e) => updateFormField("rollSuffix", e.target.value)}
+                placeholder="Roll Number must be unique."
+                className="w-2/3 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
               />
             </div>
-          ))}
+          </div>
+
+          {/* Aadhaar & Phone */}
+          {[{ label: "Aadhar Number", value: adharNumber, field: "adharNumber", type: "text", placeholder: "Enter 12-digit Aadhaar number" },
+            { label: "Phone Number", value: phone, field: "phone", type: "text", placeholder: "Enter 10-digit phone number" }]
+            .map(({ label, value, field, type, placeholder }, i) => (
+              <div key={i}>
+                <label className="block mb-1 text-gray-600 font-medium">{label}</label>
+                <input
+                  type={type}
+                  value={value}
+                  placeholder={placeholder}
+                  onChange={(e) => updateFormField(field, e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
+                />
+              </div>
+            ))}
 
           {/* Course Dropdown */}
           <div>
@@ -199,40 +229,34 @@ function SignUp() {
               value={course}
               onChange={(e) => updateFormField("course", e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
             >
               <option value="">Select a course</option>
-              {courses.map((c, i) => (
-                <option key={i} value={c}>{c}</option>
-              ))}
+              {courses.map((c, i) => <option key={i} value={c}>{c}</option>)}
             </select>
           </div>
 
-          {/* Starting Month and Timing */}
-          {[
-            {
-              label: "Starting Month", value: months, field: "months", options: [
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"]
-            },
-            {
-              label: "Timing", value: timing, field: "timing", options: [
-                "9-10 AM", "10-11 AM", "11-12 PM", "12-1 PM", "1-2 PM",
-                "2-3 PM", "3-4 PM", "4-5 PM", "5-6 PM", "6-7 PM", "7-8 PM", "8-9 PM"]
-            }
-          ].map(({ label, value, field, options }, i) => (
+          {/* Month and Timing */}
+          {[{
+            label: "Starting Month", value: months, field: "months", options: [
+              "January", "February", "March", "April", "May", "June",
+              "July", "August", "September", "October", "November", "December"]
+          },
+          {
+            label: "Timing", value: timing, field: "timing", options: [
+              "9-10 AM", "10-11 AM", "11-12 PM", "12-1 PM", "1-2 PM",
+              "2-3 PM", "3-4 PM", "4-5 PM", "5-6 PM", "6-7 PM", "7-8 PM", "8-9 PM"]
+          }].map(({ label, value, field, options }, i) => (
             <div key={i}>
               <label className="block mb-1 text-gray-600 font-medium">{label}</label>
               <select
                 value={value}
                 onChange={(e) => updateFormField(field, e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
               >
                 <option value="">Select {label}</option>
-                {options.map((opt, idx) => (
-                  <option key={idx} value={opt}>{opt}</option>
-                ))}
+                {options.map((opt, idx) => <option key={idx} value={opt}>{opt}</option>)}
               </select>
             </div>
           ))}
@@ -244,17 +268,17 @@ function SignUp() {
               type="file"
               onChange={handlePhotoChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
             />
           </div>
 
           {photoPreview && (
-            <div className="mt-4 relative">
-              <h2 className="text-gray-700 font-medium">Uploaded Photo</h2>
+            <div className="mt-4 relative text-center">
+              <h2 className="text-gray-700 font-medium mb-2">Uploaded Photo</h2>
               <img
                 src={photoPreview}
                 alt="Uploaded Preview"
-                className="mt-2 w-32 h-32 object-cover rounded-full mx-auto"
+                className="w-32 h-32 object-cover rounded-full mx-auto"
               />
               <button
                 type="button"
