@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [rollPrefix, setRollPrefix] = useState("SN");
+  const [rollPrefix, setRollPrefix] = useState("NC");
   const [rollSuffix, setRollSuffix] = useState("");
   const [adharNumber, setAdharNumber] = useState("");
   const [course, setCourse] = useState("");

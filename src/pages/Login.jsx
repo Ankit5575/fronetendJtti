@@ -4,11 +4,12 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Lottie from "lottie-react";
-import planeAnimation from "../assets/animation3.json"; // ✅ Make sure you have this animation file
+import planeAnimation from "../assets/animation3.json"; // ✅ Ensure the path is correct
 
 function Login() {
   const [email, setEmail] = useState("");
-  const [rollNumber, setRollNumber] = useState("");
+  const [rollPrefix, setRollPrefix] = useState("NC");
+  const [rollSuffix, setRollSuffix] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const navigate = useNavigate();
@@ -34,11 +35,19 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const fullRollNumber = rollPrefix + rollSuffix;
+
+    if (!/^\d+$/.test(rollSuffix)) {
+      toast.error("Roll number must be numeric.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await axios.post(`https://newportal.onrender.com/api/user/login`, {
         email,
-        rollNumber,
+        rollNumber: fullRollNumber,
       });
 
       if (res.data.success) {
@@ -67,10 +76,7 @@ function Login() {
       {/* 🔥 Loading Overlay */}
       {loading && (
         <>
-          {/* Blue transparent background */}
-          <div className="absolute inset-0  bg-opacity-50 z-40"></div>
-
-          {/* Animation and motivational text */}
+          <div className="absolute inset-0 bg-opacity-50 z-40"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center z-50">
             <Lottie animationData={planeAnimation} className="w-60 h-60" loop={true} />
             <p className="mt-4 text-lg font-semibold text-black text-center animate-pulse">
@@ -88,6 +94,7 @@ function Login() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email Field */}
           <div>
             <label className="block mb-1 text-gray-600 font-medium">Email Address</label>
             <input
@@ -99,17 +106,31 @@ function Login() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
           </div>
+
+          {/* Roll Number Field with Prefix */}
           <div>
             <label className="block mb-1 text-gray-600 font-medium">Roll Number</label>
-            <input
-              type="text"
-              placeholder="Enter your roll number"
-              value={rollNumber}
-              onChange={(e) => setRollNumber(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-            />
+            <div className="flex gap-2">
+              <select
+                value={rollPrefix}
+                onChange={(e) => setRollPrefix(e.target.value)}
+                className="w-1/3 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="NC">NC</option>
+                <option value="SN">SN</option>
+              </select>
+              <input
+                type="text"
+                placeholder="Enter roll number"
+                value={rollSuffix}
+                onChange={(e) => setRollSuffix(e.target.value)}
+                required
+                className="w-2/3 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
+              />
+            </div>
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -150,7 +171,7 @@ function Login() {
         </p>
       </div>
 
-      {/* ✅ Footer Section */}
+      {/* Footer */}
       <footer className="text-center py-4 text-white text-sm mt-6">
         Made with ❤️ by <span className="font-bold">JTTI</span> |
         <a
@@ -165,7 +186,6 @@ function Login() {
 
       {/* Toast Notifications */}
       <ToastContainer />
-      
     </div>
   );
 }
