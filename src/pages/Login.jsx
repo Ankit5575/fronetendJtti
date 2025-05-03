@@ -4,7 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Lottie from "lottie-react";
-import planeAnimation from "../assets/ani.json"; // ✅ Make sure you have this animation file
+import planeAnimation from "../assets/animation3.json"; // ✅ Make sure you have this animation file
 
 function Login() {
   const [email, setEmail] = useState("");
