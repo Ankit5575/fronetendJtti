@@ -72,7 +72,7 @@ function Login() {
 
           {/* Animation and motivational text */}
           <div className="absolute inset-0 flex flex-col justify-center items-center z-50">
-            <Lottie animationData={planeAnimation} className="w-44 h-44" loop={true} />
+            <Lottie animationData={planeAnimation} className="w-60 h-60" loop={true} />
             <p className="mt-4 text-lg font-semibold text-black text-center animate-pulse">
               {motivationalLines[currentLineIndex]}
             </p>
