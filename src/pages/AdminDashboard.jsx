@@ -12,16 +12,7 @@ function AdminDashboard() {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingUser, setEditingUser] = useState(null);
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     email: "",
-//     rollNumber: "",
-//     adharNumber: "",       //mene 3 thing addd ki ek fromData mai aur ek algag fun handlefile wala aur 
-                                  //fiel add ki hai 
-//     course: "",
-//     batch: "",
-//     fee: "",
-//   });
+ 
 const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -112,21 +103,7 @@ const [formData, setFormData] = useState({
     }
   };
   
-  
-  // Edit user
-  // const handleEdit = (user) => {
-  //     setEditingUser(user._id);
-  //     setFormData({
-  //     name: user.name,
-  //     email: user.email,
-  //     rollNumber: user.rollNumber,
-  //     adharNumber: user.adharNumber,
-  //     course: user.course,
-  //     batch: user.batch,
-  //     fee: user.fee
-  //     });
-  //     // ${currentUser._id}
-  // };
+   
   const handleEdit = (user) => {
     setEditingUser(user._id);
     setFormData({
@@ -143,54 +120,7 @@ const [formData, setFormData] = useState({
     });
   };
   
-
-//   const handleUpdate = async (id) => {
-//     try {
-//       const token = localStorage.getItem("token");
-
-//       // Check karo kya formData me koi file hai?
-//       const hasFileUpload =
-//         formData.photo || formData.certificate || formData.idCard;
-
-//       let url = `http://localhost:8080/api/user/edit/${id}`;
-//       let dataToSend = formData;
-//       let config = {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       };
-
-//       if (hasFileUpload) {
-//         url = `http://localhost:8080/api/user/editFile/${id}`;
-
-//         // Agar file hai to FormData banana padega
-//         const fileFormData = new FormData();
-//         if (formData.photo) fileFormData.append("photo", formData.photo);
-//         if (formData.certificate)
-//           fileFormData.append("certificate", formData.certificate);
-//         if (formData.idCard) fileFormData.append("idCard", formData.idCard);
-
-//         // Text fields bhi chaho to append kar sakte ho
-//         if (formData.name) fileFormData.append("name", formData.name);
-//         if (formData.course) fileFormData.append("course", formData.course);
-//         if (formData.feeStatus)
-//           fileFormData.append("feeStatus", formData.feeStatus);
-
-//         dataToSend = fileFormData;
-
-//         // Jab FormData bhejte ho tab header me 'Content-Type' mat set karo, browser khud kar deta hai
-//         config.headers["Content-Type"] = "multipart/form-data";
-//       }
-
-//       await axios.put(url, dataToSend, config);
-
-//       toast.success("User updated successfully");
-//       setEditingUser(null);
-//       fetchUsers();
-//     } catch (error) {
-//       toast.error(error.response?.data?.message || "Failed to update user");
-//     }
-//   };
+ 
 const handleSmartUpdate = async (id) => {
   const token = localStorage.getItem("token");
 
@@ -262,20 +192,7 @@ const handleSmartUpdate = async (id) => {
     setSelectedBatch("");
     setSearchTerm("");
   };
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   setFormData({
-  //     ...formData,
-  //     feeFile: file,
-  //   });
-  // };
-  // const handleFileChange = (e) => {
-  //   const { name, files } = e.target;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: files[0], // photo, idCard, certificate
-  //   }));
-  // };
+   
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     const file = files[0];
@@ -324,9 +241,15 @@ const handleSmartUpdate = async (id) => {
   {/* Create Quiz Button */}
   <button
         onClick={() => navigate('/admin/create-quiz')}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
+        className="bg-blue-800 text-white px-4 py-2 rounded"
       >
         Create Quiz
+      </button>      {/* Filter Section */}
+  <button
+        onClick={() => navigate('/admin/announcement')}
+        className="bg-green-800 text-white px-4 py-2 rounded"
+      >
+        Create Announcement
       </button>      {/* Filter Section */}
       <div className="mb-6 bg-white p-4 rounded-lg shadow">
         <h3 className="text-lg font-semibold mb-3">Filters</h3>

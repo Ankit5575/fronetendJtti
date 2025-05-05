@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Announcement from "../compoents/Announcement"; // adjust path as needed
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -21,36 +22,7 @@ function Profile() {
     }
   }, [navigate]);
 
-  // useEffect(() => {
-  //   if (!user) return;
-
-  //   const fetchQuiz = async () => {
-  //     try {
-  //       const res = await fetch(`http://localhost:8080/admin/quiz/course/${user.course}`, {
-  //         headers: {
-  //           'Cache-Control': 'no-cache'
-  //         }
-  //       });
-  //       const data = await res.json();
-  //       console.log("📦 Quiz data:", data); // Debugging line
-
-  //       // ✅ Check `isLive` at the root level
-  //       if (data.isLive) {
-  //         setQuiz(data.quiz);
-  //         setQuizAvailable(true);
-  //       } else {
-  //         setQuizAvailable(false);
-  //       }
-  //     } catch (err) {
-  //       console.error("❌ Error fetching quiz:", err);
-  //       setQuizAvailable(false);
-  //     } finally {
-  //       setQuizLoading(false);
-  //     }
-  //   };
-
-  //   fetchQuiz();
-  // }, [user]);
+  
   useEffect(() => {
     if (!user) return;
   
@@ -119,6 +91,8 @@ function Profile() {
               {quizLoading ? "Checking..." : quizAvailable ? "Start Quiz" : "Quiz Not Live"}
             </button>
           </div>
+          <Announcement/>
+
 
           <div className="bg-white rounded-xl shadow-xl overflow-hidden">
             <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 sm:p-8 text-black">

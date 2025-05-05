@@ -9,6 +9,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Quiz from "./pages/Quiz";
 import AdminCreateQuiz from "./pages/AdminCreateQuiz";
 import QuizPage from "./pages/QuizPage";
+import Announcement from "./compoents/Announcement";
+import AdminAnnouncementManager from "./pages/AdminAnnouncementPanel";
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
 <Routes>
   <Route path="/admin/user" element= {<UserList/>}  />
   <Route path="/admin/create-quiz" element={<AdminCreateQuiz/>} /> 
+  <Route path="/admin/announcement" element={<AdminAnnouncementManager/>} /> 
 </Routes>
 
 
